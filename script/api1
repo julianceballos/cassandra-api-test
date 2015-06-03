@@ -8,6 +8,7 @@ LOGFILE=$APPLICATION_DIRECTORY/$NAME/log/$NAME.log
 ERRFILE=$APPLICATION_DIRECTORY/$NAME/log/$NAME.error
 
 export NODE_ENV=production
+export PORT=9000
 
 start() {
     echo "Starting $NAME"
