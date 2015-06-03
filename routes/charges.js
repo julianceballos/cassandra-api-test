@@ -41,7 +41,7 @@ var Query = function(operation, params) {
     _this.params = params;
     _this.execute = function(next) {
         var cassandra = require('cassandra-driver'),
-            client = new cassandra.Client({ contactPoints: ['localhost'], keyspace: 'dev'});
+            client = new cassandra.Client({ contactPoints: ['127.0.0.2', '127.0.0.3'], keyspace: 'dev'});
 
         var query = buildQuery(_this.operation, _this.params);
         client.execute(query, {prepare: true}, function(err, result) {
