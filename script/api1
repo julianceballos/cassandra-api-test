@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+NAME=cassandra-api-test
+APPLICATION_DIRECTORY=/home/ubuntu
+APPLICATION_START=$NAME/app.js
+PIDFILE=$APPLICATION_DIRECTORY/$NAME/run/$NAME.pid
+LOGFILE=$APPLICATION_DIRECTORY/$NAME/log/$NAME.log
+ERRFILE=$APPLICATION_DIRECTORY/$NAME/log/$NAME.error
+
+export NODE_ENV=production
+
+start() {
+    echo "Starting $NAME"
+    forever start --pidFile $PIDFILE --sourceDir $APPLICATION_DIRECTORY \
+        -a -l $LOGFILE -e $ERRFILE --minUptime 5000 --spinSleepTime 2000 $APPLICATION_START
+    RETVAL=$?
+}
+
+stop() {
+    if [ -f $PIDFILE ]; then
+        echo "Shutting down $NAME"
+        forever stop $APPLICATION_START
+        rm -f $PIDFILE
+        RETVAL=$?
+    else
+        echo "$NAME is not running."
+        RETVAL=0
+    fi
+}
+
+restart() {
+    echo "Restarting $NAME"
+    stop
+    start
+}
+
+status() {
+    echo "Status for $NAME:"
+    forever list
+    RETVAL=$?
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status
+        ;;
+    restart)
+        restart
+        ;;
+    *)
+        echo "Usage: service $NAME {start|stop|status|restart}"
+        exit 1
+        ;;
+esac
+exit $RETVAL
