@@ -1,5 +1,5 @@
 var cassandra = require('cassandra-driver'),
-    client = new cassandra.Client({ contactPoints: ['localhost'], keyspace: 'dev'});
+    client = new cassandra.Client({ contactPoints: ['127.0.0.2', '127.0.0.3'], keyspace: 'dev'});
 
 var getRandomRange = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
